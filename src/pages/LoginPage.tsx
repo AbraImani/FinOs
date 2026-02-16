@@ -14,10 +14,10 @@ export function LoginPage() {
       <div className="w-full max-w-sm">
         {/* Logo */}
         <div className="text-center mb-10">
-          <div className="w-20 h-20 rounded-2xl bg-finos-accent mx-auto flex items-center justify-center mb-5">
-            <span className="text-finos-bg font-bold text-3xl">F</span>
-          </div>
-          <h1 className="text-3xl font-bold text-finos-text">FinOS</h1>
+          <img src="/imagesLogo.png" alt="FinOS" className="w-20 h-20 rounded-2xl mx-auto mb-5 shadow-2xl shadow-finos-accent/30" />
+          <h1 className="text-3xl font-bold text-finos-text">
+            Fin<span className="text-finos-accent">OS</span>
+          </h1>
           <p className="text-finos-muted mt-2 text-sm">
             Gestionnaire financier personnel
           </p>

@@ -9,10 +9,10 @@ export function Navbar() {
     <header className="fixed top-0 left-0 right-0 z-50 bg-finos-card/80 backdrop-blur-lg border-b border-finos-border">
       <div className="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between">
         <Link to="/dashboard" className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-finos-accent flex items-center justify-center">
-            <span className="text-finos-bg font-bold text-sm">F</span>
-          </div>
-          <span className="font-bold text-lg tracking-tight">FinOS</span>
+          <img src="/imagesLogo.png" alt="FinOS" className="w-8 h-8 rounded-lg" />
+          <span className="font-bold text-lg tracking-tight">
+            Fin<span className="text-finos-accent">OS</span>
+          </span>
         </Link>
 
         <div className="flex items-center gap-3">
