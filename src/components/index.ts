@@ -9,3 +9,5 @@ export { Input, Select } from './FormElements';
 export { ProtectedRoute } from './ProtectedRoute';
 export { EmptyState } from './EmptyState';
 export { IncomeExpenseChart, WalletPieChart } from './Charts';
+export { FinOSLogo } from './FinOSLogo';
+export { WalletIcon } from './WalletIcon';

@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import { Plus, Wallet, Banknote, Smartphone, Landmark, Trash2, Edit3 } from 'lucide-react';
+import { Plus, Wallet, Trash2, Edit3 } from 'lucide-react';
 import { Card, Button, Modal, Input, Select, WalletTypeBadge, EmptyState } from '@/components';
+import { WalletIcon } from '@/components/WalletIcon';
 import { useFinance } from '@/context';
 import { useAuth } from '@/context';
 import { useModal } from '@/hooks';
 import { formatCurrency } from '@/utils';
-import type { WalletType } from '@/types';
+import type { WalletType, WalletProvider } from '@/types';
 
 const walletTypeOptions = [
   { value: 'cash', label: 'Cash' },
@@ -13,21 +14,23 @@ const walletTypeOptions = [
   { value: 'mobile', label: 'Mobile Money' },
 ];
 
-const walletIcons: Record<WalletType, React.ReactNode> = {
-  cash: <Banknote size={24} />,
-  bank: <Landmark size={24} />,
-  mobile: <Smartphone size={24} />,
-};
+const providerOptions: { value: WalletProvider; label: string; forType: WalletType[] }[] = [
+  { value: 'mpesa', label: 'M-Pesa', forType: ['mobile'] },
+  { value: 'airtel-money', label: 'Airtel Money', forType: ['mobile'] },
+  { value: 'orange-money', label: 'Orange Money', forType: ['mobile'] },
+  { value: 'equity', label: 'Equity Bank', forType: ['bank'] },
+  { value: 'other', label: 'Autre', forType: ['cash', 'bank', 'mobile'] },
+];
 
 export function WalletsPage() {
   const { wallets, addWallet, updateWallet, deleteWallet } = useFinance();
   const { user } = useAuth();
   const { isOpen, open, close } = useModal();
   const [editId, setEditId] = useState<string | null>(null);
-  const [form, setForm] = useState({ name: '', type: '' as WalletType | '', balance: '' });
+  const [form, setForm] = useState({ name: '', type: '' as WalletType | '', provider: '' as WalletProvider | '', balance: '' });
 
   const resetForm = () => {
-    setForm({ name: '', type: '', balance: '' });
+    setForm({ name: '', type: '', provider: '', balance: '' });
     setEditId(null);
   };
 
@@ -36,9 +39,9 @@ export function WalletsPage() {
     open();
   };
 
-  const handleEdit = (w: { id: string; name: string; type: WalletType; balance: number }) => {
+  const handleEdit = (w: { id: string; name: string; type: WalletType; provider?: WalletProvider; balance: number }) => {
     setEditId(w.id);
-    setForm({ name: w.name, type: w.type, balance: String(w.balance) });
+    setForm({ name: w.name, type: w.type, provider: w.provider || '', balance: String(w.balance) });
     open();
   };
 
@@ -50,6 +53,7 @@ export function WalletsPage() {
       await updateWallet(editId, {
         name: form.name,
         type: form.type as WalletType,
+        provider: (form.provider || 'other') as WalletProvider,
         balance: Number(form.balance) || 0,
       });
     } else {
@@ -57,6 +61,7 @@ export function WalletsPage() {
         userId: user.id,
         name: form.name,
         type: form.type as WalletType,
+        provider: (form.provider || 'other') as WalletProvider,
         balance: Number(form.balance) || 0,
       });
     }
@@ -89,16 +94,8 @@ export function WalletsPage() {
           {wallets.map((w) => (
             <Card key={w.id} className="relative group">
               <div className="flex items-start justify-between mb-4">
-                <div
-                  className={`w-12 h-12 rounded-xl flex items-center justify-center ${
-                    w.type === 'cash'
-                      ? 'bg-finos-accent/20 text-finos-accent'
-                      : w.type === 'bank'
-                        ? 'bg-finos-info/20 text-finos-info'
-                        : 'bg-purple-500/20 text-purple-400'
-                  }`}
-                >
-                  {walletIcons[w.type]}
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center bg-finos-bg/50 overflow-hidden">
+                  <WalletIcon type={w.type} provider={w.provider} size={40} />
                 </div>
                 <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                   <button
@@ -141,9 +138,19 @@ export function WalletsPage() {
             label="Type"
             options={walletTypeOptions}
             value={form.type}
-            onChange={(e) => setForm({ ...form, type: e.target.value as WalletType })}
+            onChange={(e) => setForm({ ...form, type: e.target.value as WalletType, provider: '' })}
             required
           />
+          {form.type && (
+            <Select
+              label="Fournisseur"
+              options={providerOptions
+                .filter((p) => p.forType.includes(form.type as WalletType))
+                .map((p) => ({ value: p.value, label: p.label }))}
+              value={form.provider}
+              onChange={(e) => setForm({ ...form, provider: e.target.value as WalletProvider })}
+            />
+          )}
           <Input
             label="Solde initial"
             type="number"

@@ -1,5 +1,5 @@
 export type { User } from './user';
-export type { Wallet, WalletType } from './wallet';
+export type { Wallet, WalletType, WalletProvider } from './wallet';
 export type { Transaction, TransactionType, TransactionCategory } from './transaction';
 export type { Loan, LoanStatus } from './loan';
 export type { Debt, DebtStatus } from './debt';

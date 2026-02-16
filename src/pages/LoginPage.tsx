@@ -1,6 +1,6 @@
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '@/context';
-import { Button } from '@/components';
+import { Button, FinOSLogo } from '@/components';
 
 export function LoginPage() {
   const { signIn, isAuthenticated, isLoading } = useAuth();
@@ -14,11 +14,13 @@ export function LoginPage() {
       <div className="w-full max-w-sm">
         {/* Logo */}
         <div className="text-center mb-10">
-          <img src="/imagesLogo.png" alt="FinOS" className="w-20 h-20 rounded-2xl mx-auto mb-5 shadow-2xl shadow-finos-accent/30" />
-          <h1 className="text-3xl font-bold text-finos-text">
-            Fin<span className="text-finos-accent">OS</span>
-          </h1>
-          <p className="text-finos-muted mt-2 text-sm">
+          <div className="flex justify-center mb-3">
+            <FinOSLogo size={72} variant="app" className="drop-shadow-2xl" />
+          </div>
+          <div className="flex justify-center">
+            <img src="/PrincipalLogo.png" alt="FinOS" className="h-10 object-contain" />
+          </div>
+          <p className="text-finos-muted mt-3 text-sm">
             Gestionnaire financier personnel
           </p>
         </div>
