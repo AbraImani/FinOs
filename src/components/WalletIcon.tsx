@@ -1,6 +1,6 @@
 import type { WalletProvider } from '@/types';
 
-/** Map provider keys → image paths in public/wallets/ */
+/** Map provider keys --- image paths in public/wallets/ */
 const providerLogos: Record<string, string> = {
   mpesa: '/wallets/Mpesa.png',
   'airtel-money': '/wallets/airtel-money.png',
